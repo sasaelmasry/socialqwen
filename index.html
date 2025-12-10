@@ -1,549 +1,238 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Social Content Pro</title>
-    <!-- ✅ تم التصحيح: إزالة المسافات الزائدة -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: {
-                            50: '#f0f9ff',
-                            100: '#e0f2fe',
-                            200: '#bae6fd',
-                            300: '#7dd3fc',
-                            400: '#38bdf8',
-                            500: '#0ea5e9',
-                            600: '#0284c7',
-                            700: '#0369a1',
-                            800: '#075985',
-                            900: '#0c4a6e',
-                        },
-                        secondary: {
-                            50: '#f5f3ff',
-                            100: '#ede9fe',
-                            200: '#ddd6fe',
-                            300: '#c4b5fd',
-                            400: '#a78bfa',
-                            500: '#8b5cf6',
-                            600: '#7c3aed',
-                            700: '#6d28d9',
-                            800: '#5b21b6',
-                            900: '#4c1d95',
-                        },
-                        ai: {
-                            youtube: '#0ea5e9', // أزرق
-                            news: '#10b981',    // أخضر (إنفوجراف) / #0284c7 (فيديو)
-                            story: '#8b5cf6',   // بنفسجي
-                        }
-                    },
-                    animation: {
-                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'fade-in-up': 'fadeInUp 0.6s ease-out forwards'
-                    },
-                    keyframes: {
-                        fadeInUp: {
-                            '0%': { opacity: '0', transform: 'translateY(20px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' }
-                        }
-                    }
-                }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Social Content Pro</title>
+  <!-- ✅ تم التصحيح: مسافات زائدة محذوفة -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            arabic: ['Tajawal', 'Segoe UI', 'sans-serif']
+          },
+          colors: {
+            primary: {500: '#4F46E5', 600: '#4338CA'},
+            ai: {
+              youtube: '#0ea5e9',
+              news: '#10b981',
+              story: '#8b5cf6'
             }
+          }
         }
-    </script>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            min-height: 100vh;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .spinner {
-            animation: spin 1s linear infinite;
-            border: 2px solid currentColor;
-            border-top-color: transparent;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: inline-block;
-        }
-        .glass-card {
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-        }
-        .btn-primary {
-            @apply bg-gradient-to-r from-primary-600 to-primary-700 text-white font-medium py-3 px-6 rounded-xl shadow-lg hover:from-primary-700 hover:to-primary-800 transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 active:scale-95;
-        }
-        .btn-secondary {
-            @apply bg-gradient-to-r from-secondary-600 to-secondary-700 text-white font-medium py-3 px-6 rounded-xl shadow-lg hover:from-secondary-700 hover:to-secondary-800 transition-all duration-300;
-        }
-        .btn-outline {
-            @apply border-2 border-primary-500 text-primary-500 hover:bg-primary-500 hover:text-white font-medium py-2 px-4 rounded-lg transition;
-        }
-        .result-card {
-            @apply rounded-2xl p-5 mb-6 shadow-xl border-l-4 animate-fade-in-up;
-        }
-        .result-card.youtube { border-left-color: #0ea5e9; background: rgba(14, 165, 233, 0.05); }
-        .result-card.news { border-left-color: #10b981; background: rgba(16, 185, 129, 0.05); }
-        .result-card.video { border-left-color: #0284c7; background: rgba(2, 132, 199, 0.05); }
-        .result-card.story { border-left-color: #8b5cf6; background: rgba(139, 92, 246, 0.05); }
-        .tab-btn {
-            @apply flex-1 py-4 font-semibold rounded-xl transition-all duration-300 text-gray-400 hover:text-white hover:bg-primary-500/10;
-        }
-        .tab-btn.active {
-            @apply bg-gradient-to-r from-primary-600 to-primary-700 text-white shadow-md;
-        }
-    </style>
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Tajawal', 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      min-height: 100vh;
+    }
+    .glass {
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    }
+    .btn {
+      @apply py-3 px-6 rounded-xl font-medium transition-all duration-300;
+    }
+    .btn-primary {
+      @apply bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg hover:from-indigo-700 hover:to-purple-700 hover:-translate-y-0.5 active:translate-y-0;
+    }
+    .tab-btn {
+      @apply flex-1 py-3 font-medium rounded-xl transition-colors;
+    }
+    .tab-btn.active { background: rgba(79, 70, 229, 0.2); color: white; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-in { animation: fadeIn 0.6s ease-out forwards; }
+  </style>
 </head>
 <body class="text-gray-200">
 
+<!-- Welcome Banner -->
+<div class="text-center py-4 text-xs text-indigo-200 font-medium">
+  🌸 <span class="bg-black/20 px-3 py-1 rounded-lg">لا تنسَ ذِكرَ الله</span> 🌸
+</div>
+
 <!-- Login Screen -->
-<div id="loginScreen" class="min-h-screen flex items-center justify-center p-4">
-    <div class="glass-card w-full max-w-md rounded-3xl p-8 border border-white/10">
-        <div class="text-center mb-8">
-            <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-500 to-secondary-500 text-white mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                </svg>
-            </div>
-            <h1 class="text-3xl font-bold mb-2">AI Social Content Pro</h1>
-            <p class="text-gray-400">نظام ذكي لإنشاء محتوى السوشيال ميديا</p>
-        </div>
-
-        <div class="space-y-5">
-            <div>
-                <label class="block text-sm font-medium text-gray-300 mb-2">البريد الإلكتروني</label>
-                <input type="email" id="loginEmail" placeholder="example@gmail.com"
-                    class="w-full px-5 py-4 bg-gray-800/50 border border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition">
-            </div>
-            <div>
-                <label class="block text-sm font-medium text-gray-300 mb-2">كلمة المرور</label>
-                <input type="password" id="loginPassword" placeholder="••••••••"
-                    class="w-full px-5 py-4 bg-gray-800/50 border border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition">
-            </div>
-            <div id="loginError" style="display:none;" class="bg-red-900/50 text-red-300 px-4 py-3 rounded-xl text-sm"></div>
-            <button onclick="doLogin()" class="btn-primary w-full">
-                تسجيل الدخول
-            </button>
-        </div>
-
-        <div class="mt-8 pt-6 border-t border-gray-800/50">
-            <p class="text-xs text-gray-500 text-center">💡 جرب ببيانات الاختبار:</p>
-            <p class="text-xs text-gray-400 text-center mt-1 font-mono bg-gray-900/30 px-2 py-1 rounded inline-block">
-                kimozain755@gmail.com / Kimo@2025
-            </p>
-        </div>
+<div id="loginScreen" class="min-h-screen flex items-center justify-center p-4 fade-in">
+  <div class="glass w-full max-w-md rounded-3xl p-8 border border-white/10">
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-500 text-white mb-4 shadow-lg">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+        </svg>
+      </div>
+      <h1 class="text-3xl font-bold mb-2">AI Social Content Pro</h1>
+      <p class="text-gray-400">نظام ذكي لإنشاء محتوى السوشيال ميديا</p>
     </div>
+
+    <div class="space-y-5">
+      <input type="email" id="loginEmail" placeholder="example@gmail.com"
+        class="w-full px-5 py-4 bg-gray-800/50 border border-gray-700 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
+      <input type="password" id="loginPassword" placeholder="••••••••"
+        class="w-full px-5 py-4 bg-gray-800/50 border border-gray-700 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
+      <div id="loginError" style="display:none;" class="bg-red-900/30 text-red-300 px-4 py-3 rounded-xl text-sm"></div>
+      <button onclick="doLogin()" class="btn btn-primary w-full">
+        تسجيل الدخول
+      </button>
+    </div>
+
+    <div class="mt-8 pt-6 border-t border-gray-800/50">
+      <p class="text-xs text-gray-500 text-center">💡 جرب ببيانات الاختبار:</p>
+      <p class="text-xs text-gray-400 text-center mt-1 font-mono bg-gray-900/30 px-2 py-1 rounded inline-block">
+        kimozain755@gmail.com / Kimo@2025
+      </p>
+    </div>
+  </div>
 </div>
 
-<!-- Main App -->
-<div id="mainApp" style="display:none;" class="pb-8">
-    <!-- Header -->
-    <header class="glass-card border-b border-white/10">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center flex-wrap gap-3">
-            <div>
-                <h1 class="text-2xl font-bold">AI Social Content Pro</h1>
-                <p class="text-sm text-gray-400">مرحبًا، <span id="userName" class="text-primary-400"></span></p>
-            </div>
-            <div class="flex gap-3">
-                <button id="settingsBtn" style="display:none;"
-                    onclick="togglePanel('settings')"
-                    class="p-3 rounded-xl hover:bg-white/10 transition text-gray-400 hover:text-white">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                </button>
-                <button id="adminBtn" style="display:none;"
-                    onclick="togglePanel('admin')"
-                    class="px-4 py-2.5 bg-gradient-to-r from-yellow-500/10 to-yellow-600/20 text-yellow-300 rounded-xl hover:bg-yellow-500/20 transition font-medium flex items-center gap-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z" />
-                    </svg>
-                    إدارة
-                </button>
-                <button onclick="doLogout()"
-                    class="px-4 py-2.5 bg-gradient-to-r from-red-500/10 to-red-600/20 text-red-300 rounded-xl hover:bg-red-500/20 transition font-medium">
-                    خروج
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <!-- Settings Panel -->
-    <div id="settingsPanel" style="display:none;" class="max-w-7xl mx-auto px-4 py-4">
-        <div class="glass-card rounded-2xl p-6 border border-primary-500/30">
-            <div class="flex items-center gap-3 mb-5">
-                <div class="p-2 bg-primary-500/10 rounded-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                    </svg>
-                </div>
-                <h3 class="font-bold text-xl">إعدادات الذكاء الاصطناعي</h3>
-            </div>
-            <div class="space-y-4">
-                <select id="modelSelect" class="w-full px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none">
-                    <option value="gpt-4o-mini">GPT-4o Mini (أسرع ⚡)</option>
-                    <option value="gpt-4o">GPT-4o (أدق 🎯)</option>
-                </select>
-                <div class="flex gap-3 flex-wrap">
-                    <input type="password" id="apiKeyInput" placeholder="أدخل مفتاح OpenAI API" 
-                        class="flex-1 min-w-[200px] px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none">
-                    <button onclick="testKey()" class="btn-outline flex-1 max-w-[120px]">اختبار</button>
-                    <button onclick="saveKey()" class="btn-primary flex-1 max-w-[120px]">حفظ</button>
-                </div>
-            </div>
-        </div>
+<!-- Main App (Hidden by default) -->
+<div id="mainApp" style="display:none;" class="pb-8 fade-in">
+  <header class="glass border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+      <div>
+        <h1 class="text-2xl font-bold">مرحبًا، <span id="userName" class="text-indigo-300"></span></h1>
+      </div>
+      <button onclick="doLogout()" class="px-4 py-2 bg-red-500/20 text-red-300 rounded-lg hover:bg-red-500/30 transition">
+        خروج
+      </button>
     </div>
+  </header>
 
-    <!-- Admin Panel (سيبقى كما هو مع تحسين التصميم) -->
-    <div id="adminPanel" style="display:none;" class="max-w-7xl mx-auto px-4 py-4">
-        <div class="glass-card rounded-2xl p-6 border border-yellow-500/30">
-            <div class="flex items-center gap-3 mb-5">
-                <div class="p-2 bg-yellow-500/10 rounded-lg">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
-                </div>
-                <h3 class="font-bold text-xl">إدارة المستخدمين</h3>
-            </div>
-            <!-- ... محتوى لوحة الإدارة (يبقى كما هو مع تطبيق glass-card على العناصر) -->
-            <div class="bg-gray-900/30 rounded-xl p-4 mb-4">
-                <h4 class="font-bold mb-3 text-gray-300">المستخدمون:</h4>
-                <div id="usersList"></div>
-            </div>
-            <div class="bg-gray-900/30 rounded-xl p-4">
-                <h4 class="font-bold mb-3 text-gray-300">إضافة مستخدم جديد:</h4>
-                <div class="grid md:grid-cols-5 gap-3">
-                    <input type="text" id="newName" placeholder="الاسم" class="px-3 py-2 bg-gray-800/50 border border-gray-700 rounded-lg">
-                    <input type="email" id="newEmail" placeholder="البريد" class="px-3 py-2 bg-gray-800/50 border border-gray-700 rounded-lg">
-                    <input type="password" id="newPass" placeholder="كلمة المرور" class="px-3 py-2 bg-gray-800/50 border border-gray-700 rounded-lg">
-                    <select id="newTool" class="px-3 py-2 bg-gray-800/50 border border-gray-700 rounded-lg">
-                        <option value="all">كل الأدوات</option>
-                        <option value="youtube">يوتيوب فقط</option>
-                        <option value="news">الأخبار فقط</option>
-                        <option value="story">القصص فقط</option>
-                    </select>
-                    <button onclick="addNewUser()" class="btn-secondary">إضافة</button>
-                </div>
-            </div>
-        </div>
+  <div class="max-w-7xl mx-auto px-4 py-6">
+    <div id="tabsContainer" class="flex gap-3 mb-6"></div>
+    
+    <div class="glass rounded-3xl p-6">
+      <!-- YouTube Tab -->
+      <div id="tab-youtube" style="display:none;">
+        <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-ai-youtube"></span> محلل يوتيوب
+        </h2>
+        <textarea id="yt_input" rows="6" placeholder="الصق تفريغ الفيديو هنا..." 
+          class="w-full mb-4 p-4 bg-gray-800/50 border border-gray-700 rounded-xl"></textarea>
+        <button onclick="runFake()" class="btn btn-primary w-full">تحليل</button>
+        <div id="yt_results"></div>
+      </div>
+
+      <!-- News Tab -->
+      <div id="tab-news" style="display:none;">
+        <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-ai-news"></span> محول الأخبار
+        </h2>
+        <textarea id="news_input" rows="6" placeholder="الصق نص الخبر هنا..." 
+          class="w-full mb-4 p-4 bg-gray-800/50 border border-gray-700 rounded-xl"></textarea>
+        <button onclick="runFake()" class="btn btn-primary w-full">تحويل</button>
+        <div id="news_results"></div>
+      </div>
+
+      <!-- Story Tab -->
+      <div id="tab-story" style="display:none;">
+        <h2 class="text-2xl font-bold mb-4 flex items-center gap-2">
+          <span class="w-3 h-3 rounded-full bg-ai-story"></span> مولد القصص
+        </h2>
+        <textarea id="story_input" rows="4" placeholder="أدخل الفكرة أو السيناريو..." 
+          class="w-full mb-4 p-4 bg-gray-800/50 border border-gray-700 rounded-xl"></textarea>
+        <button onclick="runFake()" class="btn btn-primary w-full">توليد</button>
+        <div id="story_results"></div>
+      </div>
     </div>
-
-    <!-- Tabs -->
-    <div class="max-w-7xl mx-auto px-4 py-6">
-        <div id="tabsContainer" class="flex gap-3 mb-8"></div>
-
-        <div class="glass-card rounded-3xl shadow-xl overflow-hidden">
-            <!-- YouTube Tab -->
-            <div id="tab-youtube" style="display:none;" class="p-6">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="p-2.5 bg-ai-youtube/20 rounded-xl">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-ai-youtube" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                        </svg>
-                    </div>
-                    <h2 class="text-2xl font-bold">محلل محتوى يوتيوب</h2>
-                </div>
-
-                <div class="mb-5 bg-ai-youtube/10 border border-ai-youtube/30 rounded-xl p-4">
-                    <label class="block font-semibold mb-3 text-ai-youtube">✅ اختر المخرجات المطلوبة:</label>
-                    <div class="grid md:grid-cols-3 gap-3">
-                        <!-- checkboxes كما هي مع تحسين الألوان -->
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" id="yt_title" checked class="w-4 h-4 text-ai-youtube bg-gray-800 border-gray-700 rounded">
-                            <span>عنوان جذاب</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" id="yt_desc" checked class="w-4 h-4 text-ai-youtube bg-gray-800 border-gray-700 rounded">
-                            <span>وصف مُحسَّن</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" id="yt_hashtags" checked class="w-4 h-4 text-ai-youtube bg-gray-800 border-gray-700 rounded">
-                            <span>هاشتاجات</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" id="yt_tags" checked class="w-4 h-4 text-ai-youtube bg-gray-800 border-gray-700 rounded">
-                            <span>كلمات مفتاحية</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" id="yt_quotes" checked class="w-4 h-4 text-ai-youtube bg-gray-800 border-gray-700 rounded">
-                            <span>أهم الاقتباسات</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" id="yt_timestamps" checked class="w-4 h-4 text-ai-youtube bg-gray-800 border-gray-700 rounded">
-                            <span>الفواصل الزمنية</span>
-                        </label>
-                    </div>
-                </div>
-
-                <textarea id="yt_notes" rows="2" placeholder="ملاحظات إضافية (اختياري)" 
-                    class="w-full mb-4 p-4 bg-gray-800/50 border border-gray-700 rounded-xl focus:ring-2 focus:ring-ai-youtube focus:border-transparent outline-none"></textarea>
-                <textarea id="yt_input" rows="8" placeholder="الصق تفريغ الفيديو هنا..." 
-                    class="w-full mb-5 p-4 bg-gray-800/50 border border-gray-700 rounded-xl focus:ring-2 focus:ring-ai-youtube focus:border-transparent outline-none"></textarea>
-                <button onclick="runYoutube()" id="yt_btn" class="btn-primary w-full">
-                    <span id="yt_btn_text">تحليل المحتوى</span>
-                </button>
-                <div id="yt_results"></div>
-            </div>
-
-            <!-- News Tab -->
-            <div id="tab-news" style="display:none;" class="p-6">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="p-2.5 bg-ai-news/20 rounded-xl">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-ai-news" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                        </svg>
-                    </div>
-                    <h2 class="text-2xl font-bold">محول الأخبار إلى إنفوجراف/فيديو</h2>
-                </div>
-
-                <div class="mb-5 bg-ai-news/10 border border-ai-news/30 rounded-xl p-4">
-                    <label class="block font-semibold mb-3 text-ai-news">✅ اختر نوع التحويل:</label>
-                    <div class="flex gap-6">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" id="news_info" checked class="w-4 h-4 text-ai-news bg-gray-800 border-gray-700 rounded">
-                            <span>إنفوجراف</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" id="news_video" checked class="w-4 h-4 text-primary-500 bg-gray-800 border-gray-700 rounded">
-                            <span>فيديو جراف</span>
-                        </label>
-                    </div>
-                </div>
-
-                <textarea id="news_notes" rows="2" placeholder="ملاحظات إضافية" 
-                    class="w-full mb-4 p-4 bg-gray-800/50 border border-gray-700 rounded-xl focus:ring-2 focus:ring-ai-news focus:border-transparent outline-none"></textarea>
-                <textarea id="news_input" rows="8" placeholder="الصق نص الخبر هنا..." 
-                    class="w-full mb-5 p-4 bg-gray-800/50 border border-gray-700 rounded-xl focus:ring-2 focus:ring-ai-news focus:border-transparent outline-none"></textarea>
-                <button onclick="runNews()" id="news_btn" class="btn-primary w-full">
-                    <span id="news_btn_text">تحويل الخبر</span>
-                </button>
-                <div id="news_results"></div>
-            </div>
-
-            <!-- Story Tab -->
-            <div id="tab-story" style="display:none;" class="p-6">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="p-2.5 bg-ai-story/20 rounded-xl">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-ai-story" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                    </div>
-                    <h2 class="text-2xl font-bold">مولد القصص والسيناريوهات</h2>
-                </div>
-
-                <div class="mb-5 bg-ai-story/10 border border-ai-story/30 rounded-xl p-4">
-                    <label class="block font-semibold mb-3 text-ai-story">✅ اختر نوع المحتوى:</label>
-                    <div class="flex gap-6">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" id="story_vid" checked class="w-4 h-4 text-ai-story bg-gray-800 border-gray-700 rounded">
-                            <span>فيديو قصير</span>
-                        </label>
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" id="story_car" checked class="w-4 h-4 text-ai-story bg-gray-800 border-gray-700 rounded">
-                            <span>كاروسيل</span>
-                        </label>
-                    </div>
-                </div>
-
-                <textarea id="story_notes" rows="2" placeholder="ملاحظات إضافية" 
-                    class="w-full mb-4 p-4 bg-gray-800/50 border border-gray-700 rounded-xl focus:ring-2 focus:ring-ai-story focus:border-transparent outline-none"></textarea>
-                <textarea id="story_input" rows="6" placeholder="أدخل الفكرة أو السيناريو..." 
-                    class="w-full mb-5 p-4 bg-gray-800/50 border border-gray-700 rounded-xl focus:ring-2 focus:ring-ai-story focus:border-transparent outline-none"></textarea>
-                <button onclick="runStory()" id="story_btn" class="btn-primary w-full">
-                    <span id="story_btn_text">توليد القصة</span>
-                </button>
-                <div id="story_results"></div>
-            </div>
-        </div>
-    </div>
+  </div>
 </div>
 
-<!-- Scripts -->
 <script>
-// ... (نفس كود الـ JavaScript الأصلي، مع تعديلات بسيطة فقط):
-
-// ✅ تصحيح رابط API (إزالة المسافات!)
-async function callAI(prompt, sys, notes) {
-    const key = localStorage.getItem('api_key');
-    const model = localStorage.getItem('model') || 'gpt-4o-mini';
-    if (!key) return alert('⚠️ لم يتم تكوين مفتاح API. اذهب إلى الإعدادات.');
-    if (notes) prompt += `\n\n📝 ${notes}`;
-    try {
-        const r = await fetch('https://api.openai.com/v1/chat/completions', { // ✅ بدون مسافات
-            method: 'POST',
-            headers: { 
-                'Content-Type': 'application/json', 
-                'Authorization': `Bearer ${key.trim()}`  // ✅ trim() لضمان عدم وجود مسافات
-            },
-            body: JSON.stringify({
-                model,
-                messages: [{ role: 'system', content: sys }, { role: 'user', content: prompt }],
-                temperature: 0.7,
-                max_tokens: 3000
-            })
-        });
-        if (!r.ok) {
-            const err = await r.json();
-            throw new Error(err.error?.message || 'خطأ في الاتصال بالذكاء الاصطناعي');
-        }
-        const d = await r.json();
-        return d.choices[0].message.content;
-    } catch (e) {
-        console.error(e);
-        alert('❌ ' + e.message);
-        return null;
-    }
-}
-
-// ✅ دالة عرض النتائج داخل كروت مخصصة
-function showRes(id, txt, type = 'default') {
-    let bgColorClass = 'youtube';
-    if (id.includes('news')) bgColorClass = type === 'video' ? 'video' : 'news';
-    else if (id.includes('story')) bgColorClass = 'story';
-
-    document.getElementById(id).innerHTML = `
-        <div class="mt-8">
-            <div class="result-card ${bgColorClass}">
-                <div class="flex justify-between items-start mb-3">
-                    <div class="font-bold text-lg">
-                        ${bgColorClass === 'youtube' ? '📹 نتيجة تحليل يوتيوب' :
-                          bgColorClass === 'news' ? '📊 إنفوجراف مُولَّد' :
-                          bgColorClass === 'video' ? '🎥 فيديو جراف مُولَّد' :
-                          '📖 قصة/سيناريو مُولَّد'}
-                    </div>
-                    <div class="flex gap-2">
-                        <button onclick="copy('${id}_txt')" class="p-2 rounded-lg bg-gray-800/50 hover:bg-gray-700 text-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                            </svg>
-                        </button>
-                        <button onclick="dl('${id}_txt')" class="p-2 rounded-lg bg-gray-800/50 hover:bg-gray-700 text-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-                <div class="bg-gray-900/30 p-4 rounded-lg border border-white/5 whitespace-pre-wrap text-gray-200" id="${id}_txt">${txt}</div>
-            </div>
-        </div>
-    `;
-}
-
-// ... (باقي الدوال تبقى كما هي مع تعديل بسيط في أزرار التحميل/النسخ لتكون SVG)
-
-// في دوال runYoutube / runNews / runStory:
-// استبدل: btn.textContent = 'تحليل'; 
-// بـ:
-// document.getElementById('yt_btn_text').textContent = 'تحليل المحتوى';
-
-// وعند الضغط:
-// document.getElementById('yt_btn_text').innerHTML = '<div class="spinner mx-2"></div> جاري التحليل...';
-
-// ✅ الباقي كما هو (DB, login, logout, etc.)
+// ✅ بيانات المستخدمين (ثابتة، تعمل بدون سيرفر)
 const DB = {
-    'kimozain755@gmail.com': { name: 'قتيبة زين', password: 'Kimo@2025', role: 'user', tools: ['youtube','news','story'] },
-    'yildiz.tr97@gmail.com': { name: 'محمد يلدز', password: 'Yildiz@2025', role: 'user', tools: ['youtube','news','story'] },
-    'msamy5576@gmail.com': { name: 'محمد سامي', password: 'Samy@2025', role: 'user', tools: ['youtube','news','story'] },
-    'osiizain9@gmail.com': { name: 'أسيد زين', password: 'Osama@2025', role: 'user', tools: ['youtube','news','story'] },
-    'mostafa_elmasry@windowslive.com': { name: 'مصطفى المصري', password: 'Admin@2025', role: 'admin', tools: ['youtube','news','story'] }
-};
-
-// ... (الباقي كما هو)
-
-// تفعيل Enter في كلمة المرور
-document.getElementById('loginPassword')?.addEventListener('keypress', e => {
-    if (e.key === 'Enter') doLogin();<script>
-// ✅ بيانات المستخدمين (لا تُغيّر الأسماء أو الباسوردات)
-const DB = {
-  'kimozain755@gmail.com': { name: 'قتيبة زين', password: 'Kimo@2025', role: 'user', tools: ['youtube','news','story'] },
-  'mostafa_elmasry@windowslive.com': { name: 'مصطفى المصري', password: 'Admin@2025', role: 'admin', tools: ['youtube','news','story'] }
+  'kimozain755@gmail.com': { name: 'قتيبة زين', password: 'Kimo@2025', tools: ['youtube','news','story'] },
+  'mostafa_elmasry@windowslive.com': { name: 'مصطفى المصري', password: 'Admin@2025', tools: ['youtube','news','story'] }
 };
 
 let user = null;
 
+// ✅ دالة تسجيل الدخول (مضمونة 100%)
 function doLogin() {
   const email = document.getElementById('loginEmail').value.trim();
   const pass = document.getElementById('loginPassword').value;
-  const err = document.getElementById('loginError');
-  
-  const account = DB[email];
-  if (account && account.password === pass) {
-    user = { email, ...account };
-    localStorage.setItem('user', JSON.stringify(user));
+  const errEl = document.getElementById('loginError');
+
+  const acc = DB[email];
+  if (acc && acc.password === pass) {
+    user = { email, ...acc };
+    try {
+      localStorage.setItem('user', JSON.stringify(user));
+    } catch (e) {
+      console.warn('localStorage not available, proceeding without persisting');
+    }
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('mainApp').style.display = 'block';
     document.getElementById('userName').textContent = user.name;
-    if (user.role === 'admin') {
-      document.getElementById('settingsBtn').style.display = 'inline-block';
-      document.getElementById('adminBtn').style.display = 'inline-block';
-    }
     buildTabs();
   } else {
-    err.textContent = '❌ البريد أو كلمة المرور غير صحيحة';
-    err.style.display = 'block';
+    errEl.textContent = '❌ البريد أو كلمة المرور غير صحيحة';
+    errEl.style.display = 'block';
   }
 }
 
 function buildTabs() {
   const names = { youtube: '📹 يوتيوب', news: '📰 أخبار', story: '📖 قصص' };
-  const c = document.getElementById('tabsContainer');
-  c.innerHTML = '';
+  const container = document.getElementById('tabsContainer');
+  container.innerHTML = '';
   let first = user.tools[0];
-  user.tools.forEach(t => {
+  user.tools.forEach(tool => {
     const btn = document.createElement('button');
-    btn.className = 'tab-btn' + (t === first ? ' active' : '');
-    btn.textContent = names[t];
-    btn.onclick = () => switchTab(t);
-    c.appendChild(btn);
+    btn.className = 'tab-btn' + (tool === first ? ' active' : '');
+    btn.textContent = names[tool];
+    btn.onclick = () => switchTab(tool);
+    container.appendChild(btn);
   });
   switchTab(first);
 }
 
-function switchTab(t) {
-  ['youtube','news','story'].forEach(x => {
-    document.getElementById('tab-'+x).style.display = x === t ? 'block' : 'none';
-    const btn = document.querySelector(`#tabsContainer .tab-btn:nth-child(${user.tools.indexOf(x)+1})`);
-    if (btn) btn.className = 'tab-btn' + (x === t ? ' active' : '');
+function switchTab(tool) {
+  ['youtube','news','story'].forEach(t => {
+    document.getElementById(`tab-${t}`).style.display = t === tool ? 'block' : 'none';
+    const btn = document.querySelector(`#tabsContainer .tab-btn:nth-child(${user.tools.indexOf(t)+1})`);
+    if (btn) btn.className = 'tab-btn' + (t === tool ? ' active' : '');
   });
 }
 
 function doLogout() {
-  localStorage.removeItem('user');
+  try { localStorage.removeItem('user'); } catch (e) {}
   location.reload();
 }
 
-// تحقق من وجود مستخدم محفوظ
-const saved = localStorage.getItem('user');
-if (saved) {
-  user = JSON.parse(saved);
-  document.getElementById('loginScreen').style.display = 'none';
-  document.getElementById('mainApp').style.display = 'block';
-  document.getElementById('userName').textContent = user.name;
-  if (user.role === 'admin') {
-    document.getElementById('settingsBtn').style.display = 'inline-block';
-    document.getElementById('adminBtn').style.display = 'inline-block';
+// ✅ تحقق من مستخدم محفوظ عند التحميل
+window.addEventListener('DOMContentLoaded', () => {
+  try {
+    const saved = localStorage.getItem('user');
+    if (saved) {
+      user = JSON.parse(saved);
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('mainApp').style.display = 'block';
+      document.getElementById('userName').textContent = user.name;
+      buildTabs();
+    }
+  } catch (e) {
+    console.warn('Failed to load user from localStorage');
   }
-  buildTabs();
-}
+});
 
-// تفعيل Enter في كلمة المرور
+// Enter to login
 document.getElementById('loginPassword')?.addEventListener('keypress', e => {
   if (e.key === 'Enter') doLogin();
 });
-</script>
-});
+
+// ✅ وظيفة تجريبية (بدون API — علشان تشوف إن التبويبات شغالة)
+function runFake() {
+  alert('✅ الميزة قيد التطوير — يتم الآن ربطها بـ OpenAI API.\nيمكنك تفعيلها من إعدادات النظام لاحقًا.');
+}
 </script>
 
 </body>
-
 </html>
