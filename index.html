@@ -462,9 +462,88 @@ const DB = {
 
 // تفعيل Enter في كلمة المرور
 document.getElementById('loginPassword')?.addEventListener('keypress', e => {
-    if (e.key === 'Enter') doLogin();
+    if (e.key === 'Enter') doLogin();<script>
+// ✅ بيانات المستخدمين (لا تُغيّر الأسماء أو الباسوردات)
+const DB = {
+  'kimozain755@gmail.com': { name: 'قتيبة زين', password: 'Kimo@2025', role: 'user', tools: ['youtube','news','story'] },
+  'mostafa_elmasry@windowslive.com': { name: 'مصطفى المصري', password: 'Admin@2025', role: 'admin', tools: ['youtube','news','story'] }
+};
+
+let user = null;
+
+function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass = document.getElementById('loginPassword').value;
+  const err = document.getElementById('loginError');
+  
+  const account = DB[email];
+  if (account && account.password === pass) {
+    user = { email, ...account };
+    localStorage.setItem('user', JSON.stringify(user));
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('mainApp').style.display = 'block';
+    document.getElementById('userName').textContent = user.name;
+    if (user.role === 'admin') {
+      document.getElementById('settingsBtn').style.display = 'inline-block';
+      document.getElementById('adminBtn').style.display = 'inline-block';
+    }
+    buildTabs();
+  } else {
+    err.textContent = '❌ البريد أو كلمة المرور غير صحيحة';
+    err.style.display = 'block';
+  }
+}
+
+function buildTabs() {
+  const names = { youtube: '📹 يوتيوب', news: '📰 أخبار', story: '📖 قصص' };
+  const c = document.getElementById('tabsContainer');
+  c.innerHTML = '';
+  let first = user.tools[0];
+  user.tools.forEach(t => {
+    const btn = document.createElement('button');
+    btn.className = 'tab-btn' + (t === first ? ' active' : '');
+    btn.textContent = names[t];
+    btn.onclick = () => switchTab(t);
+    c.appendChild(btn);
+  });
+  switchTab(first);
+}
+
+function switchTab(t) {
+  ['youtube','news','story'].forEach(x => {
+    document.getElementById('tab-'+x).style.display = x === t ? 'block' : 'none';
+    const btn = document.querySelector(`#tabsContainer .tab-btn:nth-child(${user.tools.indexOf(x)+1})`);
+    if (btn) btn.className = 'tab-btn' + (x === t ? ' active' : '');
+  });
+}
+
+function doLogout() {
+  localStorage.removeItem('user');
+  location.reload();
+}
+
+// تحقق من وجود مستخدم محفوظ
+const saved = localStorage.getItem('user');
+if (saved) {
+  user = JSON.parse(saved);
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('mainApp').style.display = 'block';
+  document.getElementById('userName').textContent = user.name;
+  if (user.role === 'admin') {
+    document.getElementById('settingsBtn').style.display = 'inline-block';
+    document.getElementById('adminBtn').style.display = 'inline-block';
+  }
+  buildTabs();
+}
+
+// تفعيل Enter في كلمة المرور
+document.getElementById('loginPassword')?.addEventListener('keypress', e => {
+  if (e.key === 'Enter') doLogin();
+});
+</script>
 });
 </script>
 
 </body>
+
 </html>
